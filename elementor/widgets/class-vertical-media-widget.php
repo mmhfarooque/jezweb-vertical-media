@@ -21,30 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Vertical_Media_Widget extends Widget_Base {
 
     /**
-     * Video Parser instance
-     *
-     * @var Video_Parser
-     */
-    private $video_parser;
-
-    /**
-     * Constructor
-     *
-     * @param array        $data         Widget data.
-     * @param array        $args         Widget arguments.
-     * @param Video_Parser $video_parser Video Parser instance.
-     */
-    public function __construct( $data = array(), $args = null, $video_parser = null ) {
-        parent::__construct( $data, $args );
-
-        if ( $video_parser ) {
-            $this->video_parser = $video_parser;
-        } else {
-            $this->video_parser = new Video_Parser();
-        }
-    }
-
-    /**
      * Get widget name
      *
      * @return string

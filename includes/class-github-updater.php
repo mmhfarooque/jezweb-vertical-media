@@ -110,6 +110,71 @@ class GitHub_Updater {
 
         // Add "Check for updates" link
         add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
+
+        // Enable auto-updates for this plugin
+        add_filter( 'auto_update_plugin', array( $this, 'auto_update_plugin' ), 10, 2 );
+
+        // Add plugin to auto-update plugins list
+        add_filter( 'plugin_auto_update_setting_html', array( $this, 'auto_update_setting_html' ), 10, 3 );
+    }
+
+    /**
+     * Enable auto-updates for this plugin
+     *
+     * @param bool   $update Whether to auto-update.
+     * @param object $item   The update offer object.
+     * @return bool
+     */
+    public function auto_update_plugin( $update, $item ) {
+        if ( isset( $item->plugin ) && $item->plugin === $this->plugin_slug ) {
+            // Check if user has enabled auto-updates for this plugin
+            $auto_updates = (array) get_site_option( 'auto_update_plugins', array() );
+            return in_array( $this->plugin_slug, $auto_updates, true );
+        }
+        return $update;
+    }
+
+    /**
+     * Customize auto-update setting HTML for this plugin
+     *
+     * @param string $html        The HTML for the auto-update setting.
+     * @param string $plugin_file The plugin file.
+     * @param array  $plugin_data The plugin data.
+     * @return string
+     */
+    public function auto_update_setting_html( $html, $plugin_file, $plugin_data ) {
+        if ( $plugin_file !== $this->plugin_slug ) {
+            return $html;
+        }
+
+        // If no HTML is returned (plugin not in WordPress.org), generate our own
+        if ( empty( $html ) ) {
+            $auto_updates = (array) get_site_option( 'auto_update_plugins', array() );
+            $is_enabled   = in_array( $this->plugin_slug, $auto_updates, true );
+
+            if ( $is_enabled ) {
+                $text      = __( 'Disable auto-updates', 'jezweb-vertical-media' );
+                $action    = 'disable';
+                $time_text = '';
+            } else {
+                $text      = __( 'Enable auto-updates', 'jezweb-vertical-media' );
+                $action    = 'enable';
+                $time_text = '';
+            }
+
+            $html = sprintf(
+                '<a href="%s" class="toggle-auto-update aria-button-if-js" data-wp-action="%s">
+                    <span class="dashicons dashicons-update spin hidden" aria-hidden="true"></span>
+                    <span class="label">%s</span>
+                </a>%s',
+                wp_nonce_url( admin_url( 'plugins.php?action=' . $action . '-auto-update&plugin=' . urlencode( $this->plugin_slug ) ), 'updates' ),
+                $action . '-auto-update',
+                esc_html( $text ),
+                $time_text
+            );
+        }
+
+        return $html;
     }
 
     /**

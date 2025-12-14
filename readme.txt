@@ -4,7 +4,7 @@ Tags: vertical video, youtube shorts, instagram reels, tiktok, video embed, elem
 Requires at least: 5.8
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,6 +138,12 @@ Yes. Set `autoplay="false"` in the shortcode, or toggle off the Autoplay option 
 
 == Changelog ==
 
+= 1.0.1 =
+* Fixed: Critical error when loading Elementor editor
+* Fixed: Elementor widget constructor compatibility
+* Fixed: Auto-update toggle not showing in plugins list
+* Improved: Simplified Elementor and Gutenberg integration
+
 = 1.0.0 =
 * Initial release
 * Support for YouTube Shorts, Instagram Reels, and TikTok
@@ -150,6 +156,9 @@ Yes. Set `autoplay="false"` in the shortcode, or toggle off the Autoplay option 
 * oEmbed API integration for Instagram and TikTok
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Bug fix release - fixes critical error with Elementor and adds auto-update support.
 
 = 1.0.0 =
 Initial release of Jezweb Vertical Media.

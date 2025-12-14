@@ -20,19 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Elementor_Init {
 
     /**
-     * Video Parser instance
-     *
-     * @var Video_Parser
-     */
-    private $video_parser;
-
-    /**
      * Constructor
-     *
-     * @param Video_Parser $video_parser Video Parser instance.
      */
-    public function __construct( Video_Parser $video_parser ) {
-        $this->video_parser = $video_parser;
+    public function __construct() {
         $this->register_hooks();
     }
 
@@ -76,7 +66,7 @@ class Elementor_Init {
     public function register_widgets( $widgets_manager ) {
         require_once JVM_PLUGIN_DIR . 'elementor/widgets/class-vertical-media-widget.php';
 
-        $widgets_manager->register( new Vertical_Media_Widget( $this->video_parser ) );
+        $widgets_manager->register( new Vertical_Media_Widget() );
     }
 
     /**

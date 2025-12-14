@@ -20,19 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Gutenberg_Init {
 
     /**
-     * Video Parser instance
-     *
-     * @var Video_Parser
-     */
-    private $video_parser;
-
-    /**
      * Constructor
-     *
-     * @param Video_Parser $video_parser Video Parser instance.
      */
-    public function __construct( Video_Parser $video_parser ) {
-        $this->video_parser = $video_parser;
+    public function __construct() {
         $this->register_block();
     }
 

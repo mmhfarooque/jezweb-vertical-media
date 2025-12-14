@@ -112,7 +112,7 @@ class Plugin {
         }
 
         require_once JVM_PLUGIN_DIR . 'elementor/class-elementor-init.php';
-        new Elementor_Init( $this->video_parser );
+        new Elementor_Init();
     }
 
     /**
@@ -120,7 +120,7 @@ class Plugin {
      */
     public function init_gutenberg() {
         require_once JVM_PLUGIN_DIR . 'gutenberg/class-gutenberg-init.php';
-        new Gutenberg_Init( $this->video_parser );
+        new Gutenberg_Init();
     }
 
     /**
