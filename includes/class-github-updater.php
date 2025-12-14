@@ -71,11 +71,11 @@ class GitHub_Updater {
     private $cache_key;
 
     /**
-     * Cache duration in seconds (12 hours)
+     * Cache duration in seconds (1 hour - shorter for better update detection)
      *
      * @var int
      */
-    private $cache_duration = 43200;
+    private $cache_duration = 3600;
 
     /**
      * Constructor
@@ -116,6 +116,92 @@ class GitHub_Updater {
 
         // Add plugin to auto-update plugins list
         add_filter( 'plugin_auto_update_setting_html', array( $this, 'auto_update_setting_html' ), 10, 3 );
+
+        // Clear our cache when WordPress force-checks for updates
+        add_action( 'load-update-core.php', array( $this, 'maybe_clear_cache' ) );
+
+        // Also clear on plugins page when checking for updates
+        add_action( 'load-plugins.php', array( $this, 'maybe_clear_cache' ) );
+
+        // Handle our custom force check action
+        add_action( 'admin_init', array( $this, 'handle_force_check' ) );
+
+        // Show admin notice after successful check
+        add_action( 'admin_notices', array( $this, 'show_check_notice' ) );
+    }
+
+    /**
+     * Show admin notice after update check
+     */
+    public function show_check_notice() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if ( ! isset( $_GET['jvm_checked'] ) || '1' !== $_GET['jvm_checked'] ) {
+            return;
+        }
+
+        if ( ! current_user_can( 'update_plugins' ) ) {
+            return;
+        }
+
+        $latest_version = $this->get_latest_version();
+        $has_update     = $latest_version && version_compare( $this->current_version, $latest_version, '<' );
+
+        if ( $has_update ) {
+            $message = sprintf(
+                /* translators: 1: Plugin name 2: New version */
+                esc_html__( '%1$s: Update available! Version %2$s is ready to install.', 'jezweb-vertical-media' ),
+                '<strong>Jezweb Vertical Media</strong>',
+                esc_html( $latest_version )
+            );
+            $class = 'notice notice-info';
+        } else {
+            $message = sprintf(
+                /* translators: 1: Plugin name 2: Current version */
+                esc_html__( '%1$s: You are running the latest version (%2$s).', 'jezweb-vertical-media' ),
+                '<strong>Jezweb Vertical Media</strong>',
+                esc_html( $this->current_version )
+            );
+            $class = 'notice notice-success';
+        }
+
+        printf( '<div class="%s is-dismissible"><p>%s</p></div>', esc_attr( $class ), wp_kses_post( $message ) );
+    }
+
+    /**
+     * Clear cache if force-check parameter is present
+     */
+    public function maybe_clear_cache() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if ( isset( $_GET['force-check'] ) && '1' === $_GET['force-check'] ) {
+            $this->force_check();
+        }
+    }
+
+    /**
+     * Handle our custom force check action from plugins page
+     */
+    public function handle_force_check() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if ( isset( $_GET['jvm_force_check'] ) && '1' === $_GET['jvm_force_check'] ) {
+            if ( ! current_user_can( 'update_plugins' ) ) {
+                return;
+            }
+
+            // Verify nonce
+            if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'jvm_force_check' ) ) {
+                return;
+            }
+
+            // Clear our cache
+            $this->force_check();
+
+            // Also delete WordPress update transient to force fresh check
+            delete_site_transient( 'update_plugins' );
+
+            // Redirect back to plugins page with success message
+            wp_safe_redirect( admin_url( 'plugins.php?jvm_checked=1' ) );
+            exit;
+        }
     }
 
     /**
@@ -426,9 +512,14 @@ class GitHub_Updater {
      */
     public function plugin_row_meta( $links, $file ) {
         if ( $this->plugin_slug === $file ) {
+            // Use our custom force check action that properly clears GitHub API cache
+            $check_url = wp_nonce_url(
+                admin_url( 'plugins.php?jvm_force_check=1' ),
+                'jvm_force_check'
+            );
             $links[] = sprintf(
                 '<a href="%s">%s</a>',
-                esc_url( wp_nonce_url( admin_url( 'update-core.php?force-check=1' ), 'upgrade-core' ) ),
+                esc_url( $check_url ),
                 esc_html__( 'Check for updates', 'jezweb-vertical-media' )
             );
         }

@@ -4,7 +4,7 @@ Tags: vertical video, youtube shorts, instagram reels, tiktok, video embed, elem
 Requires at least: 5.8
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,13 @@ We recommend informing your website visitors about third-party embeds in your pr
 
 == Changelog ==
 
+= 1.0.3 =
+* Fixed: GitHub update detection not working when clicking "Check for updates"
+* Fixed: Auto-update toggle not functioning correctly
+* Improved: Reduced API cache from 12 hours to 1 hour for faster update detection
+* Added: Admin notice showing update check results
+* Added: Proper cache clearing when WordPress force-checks for updates
+
 = 1.0.2 =
 * Security: Fixed inline script injection - now uses wp_enqueue_script()
 * Security: Added iframe sandbox attributes for enhanced security
@@ -179,6 +186,9 @@ We recommend informing your website visitors about third-party embeds in your pr
 * oEmbed API integration for Instagram and TikTok
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+Fixes GitHub auto-update detection. The "Check for updates" link now properly clears the API cache and shows results.
 
 = 1.0.2 =
 Security release - improved script handling, added iframe sandboxing, and enhanced output escaping. Recommended update for all users.
