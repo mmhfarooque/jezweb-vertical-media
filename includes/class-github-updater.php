@@ -233,34 +233,27 @@ class GitHub_Updater {
             return $html;
         }
 
-        // If no HTML is returned (plugin not in WordPress.org), generate our own
-        if ( empty( $html ) ) {
-            $auto_updates = (array) get_site_option( 'auto_update_plugins', array() );
-            $is_enabled   = in_array( $this->plugin_slug, $auto_updates, true );
+        // Always generate our own HTML for this plugin (WordPress returns "Auto-updates disabled" for non-WP.org plugins)
+        $auto_updates = (array) get_site_option( 'auto_update_plugins', array() );
+        $is_enabled   = in_array( $this->plugin_slug, $auto_updates, true );
 
-            if ( $is_enabled ) {
-                $text      = __( 'Disable auto-updates', 'jezweb-vertical-media' );
-                $action    = 'disable';
-                $time_text = '';
-            } else {
-                $text      = __( 'Enable auto-updates', 'jezweb-vertical-media' );
-                $action    = 'enable';
-                $time_text = '';
-            }
-
-            $html = sprintf(
-                '<a href="%s" class="toggle-auto-update aria-button-if-js" data-wp-action="%s">
-                    <span class="dashicons dashicons-update spin hidden" aria-hidden="true"></span>
-                    <span class="label">%s</span>
-                </a>%s',
-                wp_nonce_url( admin_url( 'plugins.php?action=' . $action . '-auto-update&plugin=' . urlencode( $this->plugin_slug ) ), 'updates' ),
-                $action . '-auto-update',
-                esc_html( $text ),
-                $time_text
-            );
+        if ( $is_enabled ) {
+            $text   = __( 'Disable auto-updates', 'jezweb-vertical-media' );
+            $action = 'disable';
+        } else {
+            $text   = __( 'Enable auto-updates', 'jezweb-vertical-media' );
+            $action = 'enable';
         }
 
-        return $html;
+        return sprintf(
+            '<a href="%s" class="toggle-auto-update aria-button-if-js" data-wp-action="%s">
+                <span class="dashicons dashicons-update spin hidden" aria-hidden="true"></span>
+                <span class="label">%s</span>
+            </a>',
+            wp_nonce_url( admin_url( 'plugins.php?action=' . $action . '-auto-update&plugin=' . urlencode( $this->plugin_slug ) ), 'updates' ),
+            $action . '-auto-update',
+            esc_html( $text )
+        );
     }
 
     /**
