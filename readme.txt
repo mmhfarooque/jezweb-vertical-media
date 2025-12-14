@@ -4,7 +4,7 @@ Tags: vertical video, youtube shorts, instagram reels, tiktok, video embed, elem
 Requires at least: 5.8
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -136,7 +136,30 @@ Yes. Set `autoplay="false"` in the shortcode, or toggle off the Autoplay option 
 5. TikTok video embed on the frontend
 6. Mobile responsive view
 
+== Privacy Notice ==
+
+This plugin embeds videos from third-party services (YouTube, Instagram, TikTok). When these embeds are displayed:
+
+* External scripts may be loaded from these services
+* These services may collect visitor data according to their privacy policies
+* Cookies may be set by these third-party services
+
+We recommend informing your website visitors about third-party embeds in your privacy policy.
+
+**Third-party Privacy Policies:**
+* [YouTube/Google Privacy Policy](https://policies.google.com/privacy)
+* [Instagram/Meta Privacy Policy](https://privacycenter.instagram.com/policy)
+* [TikTok Privacy Policy](https://www.tiktok.com/legal/privacy-policy)
+
 == Changelog ==
+
+= 1.0.2 =
+* Security: Fixed inline script injection - now uses wp_enqueue_script()
+* Security: Added iframe sandbox attributes for enhanced security
+* Security: Improved output escaping in admin notices
+* Security: Filtered inline scripts from oEmbed responses
+* Privacy: Added privacy notice for third-party embeds
+* Code: Improved WordPress coding standards compliance
 
 = 1.0.1 =
 * Fixed: Critical error when loading Elementor editor
@@ -156,6 +179,9 @@ Yes. Set `autoplay="false"` in the shortcode, or toggle off the Autoplay option 
 * oEmbed API integration for Instagram and TikTok
 
 == Upgrade Notice ==
+
+= 1.0.2 =
+Security release - improved script handling, added iframe sandboxing, and enhanced output escaping. Recommended update for all users.
 
 = 1.0.1 =
 Bug fix release - fixes critical error with Elementor and adds auto-update support.

@@ -3,7 +3,7 @@
  * Plugin Name: Jezweb Vertical Media
  * Plugin URI: https://jezweb.com.au
  * Description: Display vertical videos (YouTube Shorts, Instagram Reels, TikTok) with responsive 9:16 or 10:16 aspect ratio. Includes Elementor widget, Gutenberg block, and shortcode support.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Jezweb
  * Author URI: https://jezweb.com.au
  * Developer: Mahmud Farooque
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'JVM_VERSION', '1.0.1' );
+define( 'JVM_VERSION', '1.0.2' );
 define( 'JVM_PLUGIN_FILE', __FILE__ );
 define( 'JVM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'JVM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -59,10 +59,10 @@ function jvm_php_version_notice() {
         /* translators: 1: Plugin name 2: Required PHP version 3: Current PHP version */
         esc_html__( '%1$s requires PHP version %2$s or higher. Your current PHP version is %3$s. Please upgrade PHP to use this plugin.', 'jezweb-vertical-media' ),
         '<strong>Jezweb Vertical Media</strong>',
-        JVM_MINIMUM_PHP_VERSION,
-        PHP_VERSION
+        esc_html( JVM_MINIMUM_PHP_VERSION ),
+        esc_html( PHP_VERSION )
     );
-    printf( '<div class="notice notice-error"><p>%s</p></div>', $message );
+    printf( '<div class="notice notice-error"><p>%s</p></div>', wp_kses_post( $message ) );
 }
 
 /**
@@ -88,10 +88,10 @@ function jvm_wp_version_notice() {
         /* translators: 1: Plugin name 2: Required WP version 3: Current WP version */
         esc_html__( '%1$s requires WordPress version %2$s or higher. Your current WordPress version is %3$s. Please upgrade WordPress to use this plugin.', 'jezweb-vertical-media' ),
         '<strong>Jezweb Vertical Media</strong>',
-        JVM_MINIMUM_WP_VERSION,
-        $wp_version
+        esc_html( JVM_MINIMUM_WP_VERSION ),
+        esc_html( $wp_version )
     );
-    printf( '<div class="notice notice-error"><p>%s</p></div>', $message );
+    printf( '<div class="notice notice-error"><p>%s</p></div>', wp_kses_post( $message ) );
 }
 
 /**
@@ -118,10 +118,10 @@ function jvm_elementor_version_notice() {
         /* translators: 1: Plugin name 2: Required Elementor version 3: Current Elementor version */
         esc_html__( '%1$s requires Elementor version %2$s or higher for the Elementor widget. Your current Elementor version is %3$s. The Elementor widget will not be available until you upgrade.', 'jezweb-vertical-media' ),
         '<strong>Jezweb Vertical Media</strong>',
-        JVM_MINIMUM_ELEMENTOR_VERSION,
-        ELEMENTOR_VERSION
+        esc_html( JVM_MINIMUM_ELEMENTOR_VERSION ),
+        esc_html( ELEMENTOR_VERSION )
     );
-    printf( '<div class="notice notice-warning"><p>%s</p></div>', $message );
+    printf( '<div class="notice notice-warning"><p>%s</p></div>', wp_kses_post( $message ) );
 }
 
 /**

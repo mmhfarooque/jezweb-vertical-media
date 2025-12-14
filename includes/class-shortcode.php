@@ -201,6 +201,7 @@ class Shortcode {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen
                 loading="lazy"
+                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
             ></iframe>',
             esc_url( $embed_url ),
             esc_attr__( 'YouTube video player', 'jezweb-vertical-media' )
@@ -230,14 +231,21 @@ class Shortcode {
                     allowtransparency="true"
                     allowfullscreen
                     loading="lazy"
+                    sandbox="allow-scripts allow-same-origin allow-presentation"
                 ></iframe>',
                 esc_url( $video_data['embed_url'] ),
                 esc_attr__( 'Instagram video player', 'jezweb-vertical-media' )
             );
         }
 
-        // Add Instagram embed script
-        echo '<script async src="https://www.instagram.com/embed.js"></script>';
+        // Enqueue Instagram embed script properly
+        wp_enqueue_script(
+            'instagram-embed',
+            'https://www.instagram.com/embed.js',
+            array(),
+            null,
+            true
+        );
     }
 
     /**
@@ -251,9 +259,10 @@ class Shortcode {
         $oembed_data = $this->video_parser->get_oembed_data( $url, Video_Parser::PLATFORM_TIKTOK );
 
         if ( $oembed_data && ! empty( $oembed_data['html'] ) ) {
-            // Use oEmbed HTML (contains blockquote and script)
+            // Use oEmbed HTML (contains blockquote) - filter out inline scripts for security
+            $safe_html = preg_replace( '/<script\b[^>]*>(.*?)<\/script>/is', '', $oembed_data['html'] );
             echo wp_kses(
-                $oembed_data['html'],
+                $safe_html,
                 array(
                     'blockquote' => array(
                         'class'         => true,
@@ -267,10 +276,6 @@ class Shortcode {
                         'href'   => true,
                     ),
                     'p'          => array(),
-                    'script'     => array(
-                        'async' => true,
-                        'src'   => true,
-                    ),
                 )
             );
         } else {
@@ -283,14 +288,21 @@ class Shortcode {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen
                     loading="lazy"
+                    sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
                 ></iframe>',
                 esc_url( $video_data['embed_url'] ),
                 esc_attr__( 'TikTok video player', 'jezweb-vertical-media' )
             );
         }
 
-        // Add TikTok embed script
-        echo '<script async src="https://www.tiktok.com/embed.js"></script>';
+        // Enqueue TikTok embed script properly
+        wp_enqueue_script(
+            'tiktok-embed',
+            'https://www.tiktok.com/embed.js',
+            array(),
+            null,
+            true
+        );
     }
 
     /**
