@@ -1,0 +1,65 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "jezweb/vertical-media",
+    "version": "1.0.0",
+    "title": "Vertical Media",
+    "category": "embed",
+    "icon": "video-alt3",
+    "description": "Embed vertical videos from YouTube Shorts, Instagram Reels, or TikTok with responsive aspect ratio.",
+    "keywords": [
+        "video",
+        "vertical",
+        "shorts",
+        "reels",
+        "tiktok",
+        "youtube",
+        "instagram",
+        "embed"
+    ],
+    "textdomain": "jezweb-vertical-media",
+    "attributes": {
+        "videoUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "platform": {
+            "type": "string",
+            "default": "auto"
+        },
+        "aspectRatio": {
+            "type": "string",
+            "default": "9:16"
+        },
+        "maxWidth": {
+            "type": "number",
+            "default": 400
+        },
+        "autoplay": {
+            "type": "boolean",
+            "default": false
+        },
+        "loop": {
+            "type": "boolean",
+            "default": true
+        },
+        "muted": {
+            "type": "boolean",
+            "default": true
+        },
+        "align": {
+            "type": "string",
+            "default": "center"
+        }
+    },
+    "supports": {
+        "align": ["left", "center", "right", "wide", "full"],
+        "html": false,
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "editorStyle": "file:../assets/css/admin.css",
+    "style": "file:../assets/css/frontend.css"
+}

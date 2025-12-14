@@ -1,0 +1,370 @@
+/**
+ * Jezweb Vertical Media - Frontend Styles
+ *
+ * Responsive styles for vertical video embeds (YouTube Shorts, Instagram Reels, TikTok)
+ *
+ * @package JezwebVerticalMedia
+ */
+
+/* ============================================
+   CSS Custom Properties (Variables)
+   ============================================ */
+:root {
+    --jvm-max-width: 400px;
+    --jvm-border-radius: 12px;
+    --jvm-background: #000;
+    --jvm-loading-bg: #1a1a1a;
+    --jvm-loading-color: #fff;
+    --jvm-error-bg: #fee2e2;
+    --jvm-error-color: #991b1b;
+    --jvm-error-border: #fecaca;
+}
+
+/* ============================================
+   Main Container
+   ============================================ */
+.jvm-container {
+    position: relative;
+    width: 100%;
+    max-width: var(--jvm-max-width);
+    box-sizing: border-box;
+}
+
+/* Alignment Classes */
+.jvm-align-left {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.jvm-align-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.jvm-align-right {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+/* ============================================
+   Video Wrapper - Aspect Ratio Container
+   ============================================ */
+.jvm-video-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--jvm-border-radius);
+    background-color: var(--jvm-background);
+}
+
+/* 9:16 Aspect Ratio (Standard vertical video) */
+.jvm-aspect-9-16 {
+    aspect-ratio: 9 / 16;
+}
+
+/* 10:16 Aspect Ratio (Wider vertical video) */
+.jvm-aspect-10-16 {
+    aspect-ratio: 10 / 16;
+}
+
+/* Fallback for browsers without aspect-ratio support */
+@supports not (aspect-ratio: 9 / 16) {
+    .jvm-aspect-9-16 {
+        padding-bottom: 177.78%; /* 16/9 * 100 */
+    }
+
+    .jvm-aspect-10-16 {
+        padding-bottom: 160%; /* 16/10 * 100 */
+    }
+
+    .jvm-aspect-9-16 > *,
+    .jvm-aspect-10-16 > * {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+/* ============================================
+   Iframe Styles
+   ============================================ */
+.jvm-video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: var(--jvm-border-radius);
+}
+
+/* ============================================
+   TikTok & Instagram Embed Overrides
+   ============================================ */
+.jvm-video-wrapper blockquote {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    max-width: 100% !important;
+}
+
+.jvm-video-wrapper .tiktok-embed {
+    margin: 0 !important;
+    max-width: 100% !important;
+}
+
+.jvm-video-wrapper .instagram-media {
+    margin: 0 auto !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    border-radius: var(--jvm-border-radius) !important;
+}
+
+/* ============================================
+   Loading State
+   ============================================ */
+.jvm-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--jvm-loading-bg);
+    z-index: 1;
+}
+
+.jvm-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: var(--jvm-loading-color);
+    border-radius: 50%;
+    animation: jvm-spin 0.8s linear infinite;
+}
+
+@keyframes jvm-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   Error State
+   ============================================ */
+.jvm-error {
+    padding: 16px;
+    background-color: var(--jvm-error-bg);
+    border: 1px solid var(--jvm-error-border);
+    border-radius: 8px;
+    color: var(--jvm-error-color);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.jvm-error p {
+    margin: 0;
+}
+
+/* ============================================
+   Editor Preview Styles
+   ============================================ */
+.jvm-editor-preview,
+.jvm-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    background-color: var(--jvm-loading-bg);
+    color: var(--jvm-loading-color);
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.jvm-editor-preview svg,
+.jvm-placeholder svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    opacity: 0.6;
+}
+
+.jvm-editor-preview p,
+.jvm-placeholder p {
+    margin: 0 0 8px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.jvm-editor-preview small {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    opacity: 0.5;
+    word-break: break-all;
+    max-width: 100%;
+}
+
+.jvm-platform-badge {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 4px 12px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.jvm-placeholder-inner {
+    max-width: 280px;
+}
+
+/* ============================================
+   Responsive Breakpoints
+   ============================================ */
+
+/* Tablet */
+@media screen and (max-width: 1024px) {
+    .jvm-container {
+        max-width: min(var(--jvm-max-width), 90vw);
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+    .jvm-container {
+        max-width: min(var(--jvm-max-width), 100%);
+    }
+
+    /* Center align on mobile regardless of setting */
+    .jvm-align-left,
+    .jvm-align-right {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* Small Mobile */
+@media screen and (max-width: 480px) {
+    :root {
+        --jvm-border-radius: 8px;
+    }
+
+    .jvm-editor-preview,
+    .jvm-placeholder {
+        min-height: 250px;
+        padding: 16px;
+    }
+
+    .jvm-editor-preview svg,
+    .jvm-placeholder svg {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* ============================================
+   WordPress Block Editor Specific
+   ============================================ */
+.wp-block-jezweb-vertical-media {
+    max-width: 100%;
+}
+
+.wp-block-jezweb-vertical-media .jvm-container {
+    margin: 0 auto;
+}
+
+/* Block alignment support */
+.wp-block-jezweb-vertical-media.alignleft .jvm-container {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.wp-block-jezweb-vertical-media.alignright .jvm-container {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.wp-block-jezweb-vertical-media.aligncenter .jvm-container {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wp-block-jezweb-vertical-media.alignwide .jvm-container,
+.wp-block-jezweb-vertical-media.alignfull .jvm-container {
+    max-width: var(--jvm-max-width);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ============================================
+   Elementor Specific
+   ============================================ */
+.elementor-widget-jezweb_vertical_media .jvm-container {
+    margin: 0;
+}
+
+.elementor-widget-jezweb_vertical_media .elementor-widget-container {
+    display: flex;
+}
+
+/* Elementor alignment */
+.elementor-widget-jezweb_vertical_media .elementor-widget-container:has(.jvm-align-left) {
+    justify-content: flex-start;
+}
+
+.elementor-widget-jezweb_vertical_media .elementor-widget-container:has(.jvm-align-center) {
+    justify-content: center;
+}
+
+.elementor-widget-jezweb_vertical_media .elementor-widget-container:has(.jvm-align-right) {
+    justify-content: flex-end;
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+@media print {
+    .jvm-video-wrapper {
+        display: none;
+    }
+
+    .jvm-container::after {
+        content: '[Video: See online version]';
+        display: block;
+        padding: 20px;
+        text-align: center;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+    }
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    .jvm-loading-spinner {
+        animation: none;
+        border-top-color: transparent;
+    }
+}
+
+/* ============================================
+   Dark Mode Support
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --jvm-error-bg: #450a0a;
+        --jvm-error-color: #fecaca;
+        --jvm-error-border: #7f1d1d;
+    }
+}
