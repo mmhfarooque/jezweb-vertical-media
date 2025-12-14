@@ -99,8 +99,11 @@ class GitHub_Updater {
      * Initialize WordPress hooks
      */
     private function init_hooks() {
-        // Check for updates
+        // Check for updates (when transient is being set)
         add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
+
+        // Ensure plugin is in transient when being read (for AJAX auto-update toggle)
+        add_filter( 'site_transient_update_plugins', array( $this, 'inject_into_transient' ) );
 
         // Plugin information popup
         add_filter( 'plugins_api', array( $this, 'plugin_info' ), 20, 3 );
@@ -128,6 +131,47 @@ class GitHub_Updater {
 
         // Show admin notice after successful check
         add_action( 'admin_notices', array( $this, 'show_check_notice' ) );
+    }
+
+    /**
+     * Inject plugin into transient when being read
+     *
+     * This ensures the plugin is always recognized by WordPress AJAX handlers
+     * for auto-update toggle functionality.
+     *
+     * @param object $transient The update_plugins transient.
+     * @return object Modified transient.
+     */
+    public function inject_into_transient( $transient ) {
+        if ( ! is_object( $transient ) ) {
+            $transient = new \stdClass();
+        }
+
+        // Initialize arrays if not set
+        if ( ! isset( $transient->response ) ) {
+            $transient->response = array();
+        }
+        if ( ! isset( $transient->no_update ) ) {
+            $transient->no_update = array();
+        }
+
+        // If plugin is already in response (has update), don't modify
+        if ( isset( $transient->response[ $this->plugin_slug ] ) ) {
+            return $transient;
+        }
+
+        // Ensure plugin is in no_update so WordPress recognizes it
+        if ( ! isset( $transient->no_update[ $this->plugin_slug ] ) ) {
+            $transient->no_update[ $this->plugin_slug ] = (object) array(
+                'slug'        => dirname( $this->plugin_slug ),
+                'plugin'      => $this->plugin_slug,
+                'new_version' => $this->current_version,
+                'url'         => sprintf( 'https://github.com/%s/%s', $this->github_username, $this->github_repo ),
+                'package'     => '',
+            );
+        }
+
+        return $transient;
     }
 
     /**

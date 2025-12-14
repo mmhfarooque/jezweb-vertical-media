@@ -3,7 +3,7 @@
  * Plugin Name: Jezweb Vertical Media
  * Plugin URI: https://jezweb.com.au
  * Description: Display vertical videos (YouTube Shorts, Instagram Reels, TikTok) with responsive 9:16 or 10:16 aspect ratio. Includes Elementor widget, Gutenberg block, and shortcode support.
- * Version: 1.0.5
+ * Version: 1.0.6
  * Author: Jezweb
  * Author URI: https://jezweb.com.au
  * Developer: Mahmud Farooque
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'JVM_VERSION', '1.0.5' );
+define( 'JVM_VERSION', '1.0.6' );
 define( 'JVM_PLUGIN_FILE', __FILE__ );
 define( 'JVM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'JVM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

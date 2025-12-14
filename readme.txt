@@ -4,7 +4,7 @@ Tags: vertical video, youtube shorts, instagram reels, tiktok, video embed, elem
 Requires at least: 5.8
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,10 @@ We recommend informing your website visitors about third-party embeds in your pr
 
 == Changelog ==
 
+= 1.0.6 =
+* Fixed: Auto-update toggle "Invalid data. Unknown state" error
+* Added: Plugin injection into WordPress update transient for proper AJAX handling
+
 = 1.0.5 =
 * Fixed: Auto-update toggle now displays correctly (Enable/Disable auto-updates link)
 
@@ -192,6 +196,9 @@ We recommend informing your website visitors about third-party embeds in your pr
 * oEmbed API integration for Instagram and TikTok
 
 == Upgrade Notice ==
+
+= 1.0.6 =
+Fixes the "Invalid data. Unknown state" error when toggling auto-updates.
 
 = 1.0.5 =
 Fixes auto-update toggle display. You can now enable/disable auto-updates from the plugins page.
